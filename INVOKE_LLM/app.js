@@ -15,7 +15,8 @@ async function main(){
       const messages=[
           {
             role:'system',
-          content:'You are a smart assistant.'
+          content:`You are a smart assistant.
+          Current date and time : ${new Date().toUTCString()}`
           },
           // {
           //   role :'user',
@@ -87,7 +88,8 @@ async function main(){
           }
         }
         }
-        }      
+        }  
+        rl.close();    
 }
 
 main();
