@@ -1,5 +1,7 @@
 import express from "express"
 
+import { generate } from "./chatbot.js";
+
 const app=express();
 const PORT=3001;
 
@@ -13,7 +15,8 @@ app.get('/',(req,res)=>{
 app.post('/chat',(req,res)=>{
     const {message}=req.body;
      console.log('message',message)
-     res.json({message:'Ok'})
+     const result=await generate(message)
+     res.json({message:result})
 })
 
 app.listen(PORT,()=>{
