@@ -1,4 +1,6 @@
-console.log("working")
+
+
+
 
 
 const input=document.querySelector("#input")
@@ -11,7 +13,7 @@ const askBtn=document.querySelector("#ask")
 input?.addEventListener('keyup',handler);
 askBtn.addEventListener('click',handlerAsk)
 
-function generate(text){
+async function generate(text){
 
     // Append msg you ui
 
@@ -27,25 +29,49 @@ function generate(text){
 
 
     // show LLm respond to ui
-
+    const assistantMsg=await callServer(text)
+    const assistantMsgElem=document.createElement('div');
+    assistantMsgElem.className=`max-w-fit`;
+    assistantMsgElem.textContent=assistantMsg;
+    chatContainer?.appendChild(assistantMsgElem);
+    
 }
 
-function handlerAsk(e){
+async function callServer(inputText){
+    const response=await fetch('http://localhost:3001/chat',{ 
+        method:'POST',
+        headers:{
+            'content-type':'application/json',
+        },
+        body: JSON.stringify({message:inputText})
+})
+
+      if(!response.ok){
+        throw new Error("Something went wrong")
+      }
+
+      const result=await response.json();
+      return result.message;
+
+}
+   
+
+async function handlerAsk(e){
      const text=input?.value.trim()
     if(!text){
         return
     }
-    generate(text)
+    await generate(text)
    
 }
 
-function handler(e){
+async function handler(e){
 
    if(e.key==='Enter'){
    const text=input?.value.trim()
     if(!text){
         return
     }
-    generate(text)
+    await generate(text)
    }
 }

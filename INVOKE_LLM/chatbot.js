@@ -64,7 +64,7 @@ export async function generate(userMessage){
        const toolCalls=completions.choices[0].message.tool_calls
 
         if(!toolCalls){
-          console.log(`AI ${completions.choices[0].message.content}`)
+         return completions.choices[0].message.content
           break;
         }
 
@@ -88,7 +88,7 @@ export async function generate(userMessage){
       
 }
 
-main();
+
 
 
 
