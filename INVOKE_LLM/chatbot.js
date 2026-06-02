@@ -15,7 +15,15 @@ export async function generate(userMessage){
           {
             role:'system',
           content:`You are a smart assistant.
-          Current date and time : ${new Date().toUTCString()}`
+          Current date and time : ${new Date().toUTCString()} 
+           
+           Instructions:
+- Answer naturally like ChatGPT.
+- Use plain text.
+- Do not use markdown tables.
+- Keep responses easy to read.
+- When providing weather, news, or search results, summarize them in normal sentences.
+          `
           },
           // {
           //   role :'user',
@@ -98,7 +106,7 @@ async function webSearch({query}){
         const respose= await tvly.search(query)
        // console.log('Response:',respose)
 
-        const finalResult=respose.results.map((result)=>result.content).join("\n");;
+        const finalResult=respose.results.map((result)=>result.content).join("\n\n");;
 
         
         

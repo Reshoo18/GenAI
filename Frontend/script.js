@@ -13,6 +13,11 @@ const askBtn=document.querySelector("#ask")
 input?.addEventListener('keyup',handler);
 askBtn.addEventListener('click',handlerAsk)
 
+
+const loading=document.createElement('div')
+loading.className='my-6'
+loading.textContent='Thinking....'
+
 async function generate(text){
 
     // Append msg you ui
@@ -22,7 +27,8 @@ async function generate(text){
     msg.textContent=text;
     chatContainer?.appendChild(msg);
     input.value='';
-
+    
+    chatContainer?.appendChild(loading)
     
 
     // send it to LLM
@@ -33,6 +39,7 @@ async function generate(text){
     const assistantMsgElem=document.createElement('div');
     assistantMsgElem.className=`max-w-fit`;
     assistantMsgElem.textContent=assistantMsg;
+    loading.remove();
     chatContainer?.appendChild(assistantMsgElem);
     
 }
