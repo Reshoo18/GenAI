@@ -1,21 +1,15 @@
-
-
-
-
-
 const input=document.querySelector("#input")
-
-
 const chatContainer=document.querySelector("#chat-container")
 const askBtn=document.querySelector("#ask")
 
+const theadId = Date.now().toString(36) + Math.random().toString(36).substring(2,8)
 
 input?.addEventListener('keyup',handler);
 askBtn.addEventListener('click',handlerAsk)
 
 
 const loading=document.createElement('div')
-loading.className='my-6'
+loading.className='my-6 animate-pulse'
 loading.textContent='Thinking....'
 
 async function generate(text){
@@ -50,7 +44,7 @@ async function callServer(inputText){
         headers:{
             'content-type':'application/json',
         },
-        body: JSON.stringify({message:inputText})
+        body: JSON.stringify({theadId:theadId,  message:inputText})
 })
 
       if(!response.ok){

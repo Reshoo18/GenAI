@@ -3,26 +3,39 @@ import Groq from "groq-sdk";
 import {tavily} from "@tavily/core"
 import dotenv from "dotenv"
 import { stdin, stdout } from 'node:process';
+import NodeCache from 'node-cache';
+
+
 
 dotenv.config()
+const myCache= new NodeCache({stdTTL:60*60*24});
+
+
+
+
 const tvly= tavily({apiKey:process.env.TAVILY_API_KEY})
 const groq=new Groq({apiKey:process.env.GROQ_API_KEY})
 
-export async function generate(userMessage){
+export async function generate(userMessage,theadId){
     
       
-      const messages=[
+        const baseMessages=[
           {
             role:'system',
           content:`You are a smart assistant.
           Current date and time : ${new Date().toUTCString()} 
            
-           Instructions:
-- Answer naturally like ChatGPT.
-- Use plain text.
-- Do not use markdown tables.
-- Keep responses easy to read.
-- When providing weather, news, or search results, summarize them in normal sentences.
+           IMPORTANT:
+- Respond ONLY in plain text.
+- Never use markdown.
+- Never use markdown tables.
+- Never use **bold** formatting.
+- Never use headings.
+- Never use bullet points.
+- Never use the characters *, #, |, or - for formatting.
+- Write answers as normal conversational sentences.
+- Summarize information naturally like ChatGPT.
+
           `
           },
           // {
@@ -31,6 +44,7 @@ export async function generate(userMessage){
           // }
         ]
 
+        const messages=myCache.get(theadId) ?? baseMessages
        
           
           messages.push({
@@ -42,7 +56,7 @@ export async function generate(userMessage){
            const completions =await groq.chat.completions.create({
         //response_format:{type:'json_object'},
         temperature:0,
-        model:'openai/gpt-oss-120b',
+        model:'llama-3.1-8b-instant',
         messages:messages,
         
         tools:[
@@ -71,7 +85,11 @@ export async function generate(userMessage){
       messages.push(completions.choices[0].message)
        const toolCalls=completions.choices[0].message.tool_calls
 
+       
+
         if(!toolCalls){
+         myCache.set(theadId,messages)
+       
          return completions.choices[0].message.content
           break;
         }
@@ -106,7 +124,9 @@ async function webSearch({query}){
         const respose= await tvly.search(query)
        // console.log('Response:',respose)
 
-        const finalResult=respose.results.map((result)=>result.content).join("\n\n");;
+        const finalResult=respose.results.map((result)=>result.content).join("\n\n");
+
+        
 
         
         
