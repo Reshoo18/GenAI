@@ -51,8 +51,15 @@ export async function generate(userMessage,theadId){
             role:'user',
             content:userMessage
           })
+          
+          const MAX_RETRIES=10;
+          let count=0;
 
           while (true){
+            if(count>MAX_RETRIES){
+              return "I could not find the result, pls try again later"
+            }
+            count++;
            const completions =await groq.chat.completions.create({
         //response_format:{type:'json_object'},
         temperature:0,
