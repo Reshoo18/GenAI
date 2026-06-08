@@ -1,1 +1,5 @@
-console.log("Hello rag system")
+import { indexTheDocument } from "./prepare.js";
+
+const filePath='./RAG_Privacy_Policy.pdf'
+
+indexTheDocument()

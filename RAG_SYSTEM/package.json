@@ -8,5 +8,11 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@langchain/community": "^0.3.31",
+    "@langchain/core": "^0.3.80",
+    "langchain": "^0.3.37",
+    "pdf-parse": "^1.1.1"
+  }
 }
