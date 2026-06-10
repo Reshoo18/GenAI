@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,6 +13,7 @@
   "dependencies": {
     "@langchain/community": "^0.3.31",
     "@langchain/core": "^0.3.80",
+    "@langchain/textsplitters": "^0.1.0",
     "langchain": "^0.3.37",
     "pdf-parse": "^1.1.1"
   }
